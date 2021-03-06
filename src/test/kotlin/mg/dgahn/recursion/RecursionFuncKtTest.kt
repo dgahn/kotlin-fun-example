@@ -3,7 +3,7 @@ package mg.dgahn.recursion
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class RecursionFucKtTest : FunSpec({
+class RecursionFuncKtTest : FunSpec({
 
     test("피보나치 수열에 대한 테스트") {
         fibo(0) shouldBe 1
