@@ -75,3 +75,19 @@ fun zip(list1: List<Int>, list2: List<Int>): List<Pair<Int, Int>> = when {
     list1.isEmpty() || list2.isEmpty() -> listOf()
     else -> listOf(Pair(list1.head(), list2.head())) + zip(list1.tail(), list2.tail())
 }
+
+fun quicksort(list: List<Int>): List<Int> = when {
+    list.isEmpty() -> emptyList()
+    else -> {
+        val pivot = list.head()
+        val remain = list.tail()
+        val (up, down) = remain.partition { it >= pivot }
+        quicksort(down) + pivot + quicksort(up)
+    }
+}
+
+fun gcd(a: Int, b: Int): Int = when {
+    a < b -> gcd(b, a)
+    a % b == 0 -> b
+    else -> gcd(b, a % b)
+}

@@ -3,7 +3,7 @@ package mg.dgahn.recursion
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class RecursionFucKtTest: FunSpec({
+class RecursionFucKtTest : FunSpec({
 
     test("피보나치 수열에 대한 테스트") {
         fibo(0) shouldBe 1
@@ -75,6 +75,18 @@ class RecursionFucKtTest: FunSpec({
         zip(listOf(1, 2, 3), listOf(4, 5, 6)) shouldBe listOf(Pair(1, 4), Pair(2, 5), Pair(3, 6))
         zip(listOf(1), listOf(4, 5, 6)) shouldBe listOf(Pair(1, 4))
         zip(listOf(1, 5), listOf(4, 5, 6)) shouldBe listOf(Pair(1, 4), Pair(5, 5))
+    }
+
+    test("quicksort를 이용해서 정렬을 할 수 있다.") {
+        quicksort(listOf(4, 3, 5, 7, 1)) shouldBe listOf(1, 3, 4, 5, 7)
+        quicksort(listOf(9, 0, 4, 3, 1, 8)) shouldBe listOf(0, 1, 3, 4, 8, 9)
+    }
+
+    test("gcd 함수를 이용해서 최대공약수를 구할 수 있다.") {
+        gcd(10, 5) shouldBe 5
+        gcd(5, 10) shouldBe 5
+        gcd(10, 11) shouldBe 1
+        gcd(6, 8) shouldBe 2
     }
 
 })
