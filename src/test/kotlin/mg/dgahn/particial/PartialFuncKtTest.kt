@@ -50,4 +50,26 @@ class PartialFuncKtTest : FunSpec({
         isEven.orElse(isOdd)(1) shouldBe "1 is odd"
     }
 
+    test("부분 적용 함수는 함수의 일부 매개변수만 받아서 적용할 수 있다.") {
+        val expected = "HelloWorld"
+        val func = { a: String, b: String -> a + b }
+
+        val partiallyAppliedFunc1 = func.partial1("Hello")
+        val result1 = partiallyAppliedFunc1("World")
+
+        result1 shouldBe expected
+
+        val partiallyAppliedFunc2 = func.partial2("World")
+        val result2 = partiallyAppliedFunc2("Hello")
+
+        result2 shouldBe expected
+
+        val func1 = { a: String, b: String, c: String -> a + b + c }
+
+        val partiallyAppliedFunc3 = func1.partial3("Hello")
+        val result3 = partiallyAppliedFunc3.partial1(" ")("World")
+
+        result3 shouldBe "Hello World"
+    }
+
 })
