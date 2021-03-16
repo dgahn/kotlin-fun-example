@@ -1,9 +1,7 @@
 package mg.dgahn.combinator
 
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldHave
 
 class CombinatorFuncTest : FunSpec({
 
@@ -26,6 +24,54 @@ class CombinatorFuncTest : FunSpec({
             FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
 
         list.filter { it > 10.0 } shouldBe FunList.Cons(11.0, FunList.Cons(33.0, FunList.Nil))
+    }
+
+    test("drop은 앞의 값이 n개 제외된 리스트를 반환한다.") {
+        val list: FunList<Double> =
+            FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
+
+        list.drop(0) shouldBe list
+        list.drop(1) shouldBe FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil))))
+        list.drop(2) shouldBe FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))
+        list.drop(3) shouldBe FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil))
+        list.drop(4) shouldBe FunList.Cons(5.0, FunList.Nil)
+        list.drop(5) shouldBe FunList.Nil
+    }
+
+    test("dropWhile은 p가 true가 되면 반환한다.") {
+        val list: FunList<Double> =
+            FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
+
+        list.dropWhile { it == 11.0 } shouldBe list
+        list.dropWhile { it == 2.0 } shouldBe FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil))))
+        list.dropWhile { it == 33.0 } shouldBe FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))
+        list.dropWhile { it == 4.0 } shouldBe FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil))
+        list.dropWhile { it == 5.0 } shouldBe FunList.Cons(5.0, FunList.Nil)
+        list.dropWhile { it == 6.0 } shouldBe FunList.Nil
+    }
+
+    test("take는 앞에서부터 n개를 가져온다.") {
+        val list: FunList<Double> =
+            FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
+
+        list.take(0) shouldBe FunList.Nil
+        list.take(1) shouldBe FunList.Cons(11.0, FunList.Nil)
+        list.take(2) shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Nil))
+        list.take(3) shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Nil)))
+        list.take(4) shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Nil))))
+        list.take(5) shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
+    }
+
+    test("takeWhile는 앞에서부터 n개를 가져온다.") {
+        val list: FunList<Double> =
+            FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
+
+        list.takeWhile{ it >= 34.0 } shouldBe list
+//        list.takeWhile{ it >= 11.0 } shouldBe FunList.Cons(11.0, FunList.Nil)
+//        list.takeWhile{ it >= 11.0 } shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Nil))
+//        list.takeWhile{ it >= 11.0 } shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Nil)))
+//        list.takeWhile{ it >= 11.0 } shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Nil))))
+//        list.takeWhile{ it >= 11.0 } shouldBe FunList.Cons(11.0, FunList.Cons(2.0, FunList.Cons(33.0, FunList.Cons(4.0, FunList.Cons(5.0, FunList.Nil)))))
     }
 
 })

@@ -39,3 +39,34 @@ tailrec fun <T> FunList<T>.filter(acc: FunList<T> = FunList.Nil, p: (T) -> Boole
         tail.filter(acc, p)
     }
 }
+
+tailrec fun <T> FunList<T>.drop(n: Int): FunList<T> = when (n) {
+    0 -> this
+    else -> getTail().drop(n - 1)
+}
+
+tailrec fun <T> FunList<T>.dropWhile(p: (T) -> Boolean): FunList<T> = when (this) {
+    FunList.Nil -> this
+    is FunList.Cons -> if (p(head)) {
+        this
+    } else {
+        getTail().dropWhile(p)
+    }
+}
+
+tailrec fun <T> FunList<T>.take(n: Int, acc: FunList<T> = FunList.Nil): FunList<T> = when(n) {
+    0 -> acc.reverse()
+    else -> when(this) {
+        FunList.Nil -> take(0, acc)
+        is FunList.Cons -> getTail().take(n - 1, acc.addHead(head))
+    }
+}
+
+tailrec fun <T> FunList<T>.takeWhile(acc: FunList<T> = FunList.Nil, p: (T) -> Boolean): FunList<T> = when(this) {
+    FunList.Nil -> this
+    is FunList.Cons -> if (!p(head)) {
+        acc.reverse()
+    } else {
+        tail.takeWhile(acc.addHead(head), p)
+    }
+}
