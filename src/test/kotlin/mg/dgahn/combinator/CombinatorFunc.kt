@@ -54,19 +54,37 @@ tailrec fun <T> FunList<T>.dropWhile(p: (T) -> Boolean): FunList<T> = when (this
     }
 }
 
-tailrec fun <T> FunList<T>.take(n: Int, acc: FunList<T> = FunList.Nil): FunList<T> = when(n) {
+tailrec fun <T> FunList<T>.take(n: Int, acc: FunList<T> = FunList.Nil): FunList<T> = when (n) {
     0 -> acc.reverse()
-    else -> when(this) {
+    else -> when (this) {
         FunList.Nil -> take(0, acc)
         is FunList.Cons -> getTail().take(n - 1, acc.addHead(head))
     }
 }
 
-tailrec fun <T> FunList<T>.takeWhile(acc: FunList<T> = FunList.Nil, p: (T) -> Boolean): FunList<T> = when(this) {
-    FunList.Nil -> this
+tailrec fun <T> FunList<T>.takeWhile(acc: FunList<T> = FunList.Nil, p: (T) -> Boolean): FunList<T> = when (this) {
+    FunList.Nil -> acc.reverse()
     is FunList.Cons -> if (!p(head)) {
-        acc.reverse()
+        tail.takeWhile(acc, p)
     } else {
         tail.takeWhile(acc.addHead(head), p)
     }
 }
+
+tailrec fun <T, R> FunList<T>.map(acc: FunList<R> = FunList.Nil, f: (T) -> R): FunList<R> = when(this) {
+    FunList.Nil -> acc.reverse()
+    is FunList.Cons -> tail.map(acc.addHead(f(head)), f)
+}
+
+fun <T> funListOf(vararg elements: T): FunList<T> = elements.toFunList()
+
+private fun <T> Array<out T>.toFunList(): FunList<T> = when {
+    this.isEmpty() -> FunList.Nil
+    else -> FunList.Cons(this[0], this.copyOfRange(1, this.size).toFunList())
+}
+
+tailrec fun <T, R> FunList<T>.indexedMap(index: Int = 0, acc: FunList<R> = FunList.Nil, f: (Int, T) -> R): FunList<R> =
+    when (this) {
+        FunList.Nil -> acc.reverse()
+        is FunList.Cons -> tail.indexedMap(index + 1, acc.addHead(f(index, head)), f)
+    }
